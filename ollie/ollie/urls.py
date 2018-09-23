@@ -16,6 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from .views import SignUpView, SignUpSuccess
+
 urlpatterns = [
+    url(r'^$', SignUpView.as_view(), name='home'),
     url(r'^admin/', admin.site.urls),
+    url(r'^success/$', SignUpSuccess.as_view(), name='sign-up-success'),
 ]

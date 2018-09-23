@@ -3,10 +3,20 @@
 from django.db import models
 
 
-class UserInfo(models.Model):
+class OllieUser(models.Model):
+    username = models.CharField(max_length=64)
+    zip_code = models.CharField(max_length=10)
+    email = models.CharField(max_length=64)
+
+    @property
+    def pets(self):
+        return self.pets.count()
+
+
+class PetInfo(models.Model):
     LINEAGE_CHOICES = (
         ('single breed', 'single breed'),
-        ('two breeds', 'two breeds'),
+        ('mix of two breeds', 'mix of two breeds'),
         ('unknown mix', 'unknown mix')
     )
     SEX_CHOICES = (
@@ -14,18 +24,18 @@ class UserInfo(models.Model):
         ('female', 'female')
     )
     MONTHS = (
-        (1, 'Jan'),
-        (2, 'Feb'),
-        (3, 'Mar'),
-        (4, 'Apr'),
-        (5, 'May'),
-        (6, 'Jun'),
-        (7, 'Jul'),
-        (8, 'Aug'),
-        (9, 'Sep'),
-        (10, 'Oct'),
-        (11, 'Nov'),
-        (12, 'Dec')
+        ('Jan', 'Jan'),
+        ('Feb', 'Feb'),
+        ('Mar', 'Mar'),
+        ('Apr', 'Apr'),
+        ('May', 'May'),
+        ('Jun', 'Jun'),
+        ('Jul', 'Jul'),
+        ('Aug', 'Aug'),
+        ('Sep', 'Sep'),
+        ('Oct', 'Oct'),
+        ('Nov', 'Nov'),
+        ('Dec', 'Dec')
     )
     ACTIVITY_CHOICES = (
         ('lazy', 'lazy'),
@@ -37,16 +47,14 @@ class UserInfo(models.Model):
         ('ideal', 'ideal'),
         ('chubby', 'chubby')
     )
-    owner_name = models.CharField(max_length=64)
+    owner = models.ForeignKey(OllieUser, related_name='pets')
     dog_name = models.CharField(max_length=64)
-    zip_code = models.CharField(max_length=10)
-    email = models.CharField(max_length=64)
-    lineage = models.CharField(choices=LINEAGE_CHOICES, max_length=12)
+    lineage = models.CharField(choices=LINEAGE_CHOICES, max_length=17)
     primary_breed = models.CharField(max_length=50)
     secondary_breed = models.CharField(max_length=50)
     sex = models.CharField(choices=SEX_CHOICES, max_length=6)
     sterilized = models.NullBooleanField()
-    birth_month = models.CharField(choices=MONTHS, max_length=2)
+    birth_month = models.CharField(choices=MONTHS, max_length=3)
     birth_year = models.IntegerField()
     activity_level = models.CharField(choices=ACTIVITY_CHOICES, max_length=6)
     weight = models.IntegerField()
@@ -59,6 +67,3 @@ class UserInfo(models.Model):
     freeze_dried_food = models.NullBooleanField()
     home_cooked_food = models.NullBooleanField()
     fresh_food = models.NullBooleanField()
-
-
-
