@@ -12,29 +12,177 @@
                 <div><h4>Ollie Onboarding Questionnaire</h4></div>
                 <div>
                     <form id="onboarding_form" method="post" novalidate>{% csrf_token %}
-                        <p>{{ form.username.label }}: {{ form.username }}</p>
-                        <p>{{ form.email.label }}: {{ form.email }}</p>
-                        <p>{{ form.zip_code.label }}: {{ form.zip_code }}</p>
-                        <p>{{ form.pet.dog_name.label }}: {{ form.pet.dog_name }}</p>
-                        <p>{{ form.pet.lineage.label }}: {{ form.pet.lineage }}</p>
-                        <p>{{ form.pet.primary_breed.label }}: {{ form.pet.primary_breed }}<p>
-                        <p>{{ form.pet.secondary_breed.label }}: {{ form.pet.secondary_breed }}</p>
-                        <p>{{ form.pet.sex.label }}: {{ form.pet.sex }}</p>
-                        <p>{{ form.pet.sterilized }} {{ form.pet.sterilized.label }}</p>
-                        <p>{{ form.pet.birth_month.label }}: {{ form.pet.birth_month }}</p>
-                        <p>{{ form.pet.birth_year.label }}: {{ form.pet.birth_year }}</p>
-                        <p>{{ form.pet.activity_level.label }}: {{ form.pet.activity_level }}</p>
-                        <p>{{ form.pet.weight.label }}: {{ form.pet.weight }}</p>
-                        <p>{{ form.pet.body_type.label }}: {{ form.pet.body_type }}</p>
-                        <p>{{ form.pet.allergies.label }}: {{ form.pet.allergies}}</p>
-                        <p>{{ form.pet.primary_protein.label }}: {{ form.pet.primary_protein }}</p>
-                        <p>Your pup usually eats (Check all that apply):</p>
-                        <p>{{ form.pet.dry_food }} {{ form.pet.dry_food.label }} {{ form.pet.wet_food }} {{ form.pet.wet_food.label }} {{ form.pet.raw_food }} {{ form.pet.raw_food.label }}</p>
-                        <p>{{ form.pet.freeze_dried_food }} {{ form.pet.freeze_dried_food.label }} {{ form.pet.home_cooked_food }} {{ form.pet.home_cooked_food.label }} {{ form.pet.fresh_food }} {{ form.pet.fresh_food.label }}</p>
+                        <div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.username.label }}:</strong><br/>{{ form.username }}</p>
+                                {% if form.errors.username %}
+                                    {% with form.errors.username as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.email.label }}:</strong><br/>{{ form.email }}</p>
+                                {% if form.errors.email %}
+                                    {% with form.errors.email as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.zip_code.label }}:</strong><br/>{{ form.zip_code }}</p>
+                                {% if form.errors.zip_code %}
+                                    {% with form.errors.zip_code as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.dog_name.label }}:</strong><br/>{{ form.pet.dog_name }}</p>
+                                {% if form.forms.pet.errors.dog_name %}
+                                    {% with form.forms.pet.errors.dog_name as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.lineage.label }}:</strong><br/>{{ form.pet.lineage }}</p>
+                                {% if form.forms.pet.errors.lineage %}
+                                    {% with form.forms.pet.errors.lineage as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row" id="primary_breed">
+                                <p class="col-sm-3"><strong>{{ form.pet.primary_breed.label }}:</strong><br/>{{ form.pet.primary_breed }}<p>
+                                {% if form.forms.pet.errors.primary_breed %}
+                                    {% with form.forms.pet.errors.primary_breed as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row" id="secondary_breed">
+                                <p class="col-sm-3"><strong>{{ form.pet.secondary_breed.label }}:</strong><br/>{{ form.pet.secondary_breed }}</p>
+                                {% if form.forms.pet.errors.secondary_breed %}
+                                    {% with form.forms.pet.errors.secondary_breed as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.sex.label }}:</strong><br/>{{ form.pet.sex }}</p>
+                                {% if form.forms.pet.errors.sex %}
+                                    {% with form.forms.pet.errors.sex as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row" style='margin-left:4px;'>
+                                <p clas="col-sm-3">{{ form.pet.sterilized }} <strong>{{ form.pet.sterilized.label }}</strong></p>
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.birth_month.label }}:</strong><br/>{{ form.pet.birth_month }}</p>
+                                {% if form.forms.pet.errors.birth_month %}
+                                    {% with form.forms.pet.errors.birth_month as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.birth_year.label }}:</strong><br/>{{ form.pet.birth_year }}</p>
+                                {% if form.forms.pet.errors.birth_year %}
+                                    {% with form.forms.pet.errors.birth_year as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.activity_level.label }}:</strong><br/>{{ form.pet.activity_level }}</p>
+                                {% if form.forms.pet.errors.activity_level %}
+                                    {% with form.forms.pet.errors.activity_level as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.weight.label }}:</strong><br/>{{ form.pet.weight }}</p>
+                                {% if form.forms.pet.errors.weight %}
+                                    {% with form.forms.pet.errors.weight as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.body_type.label }}:</strong><br/>{{ form.pet.body_type }}</p>
+                                {% if form.forms.pet.errors.body_tye %}
+                                    {% with form.forms.pet.errors.body_type as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.allergies.label }}:</strong><br/>{{ form.pet.allergies}}</p>
+                                {% if form.forms.pet.errors.allergies %}
+                                    {% with form.forms.pet.errors.allergies as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3"><strong>{{ form.pet.primary_protein.label }}:</strong><br/>{{ form.pet.primary_protein }}</p>
+                                {% if form.forms.pet.errors.primary_protein %}
+                                    {% with form.forms.pet.errors.primary_protein as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-4"><strong>Your pup usually eats (Check all that apply):</strong></p>
+                                {% if form.forms.pet.errors.dry_food %}
+                                    {% with form.forms.pet.errors.dry_food as field %}
+                                        {% include 'ollie/includes/error_list.html' %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-3">{{ form.pet.dry_food }} {{ form.pet.dry_food.label }} {{ form.pet.wet_food }} {{ form.pet.wet_food.label }} {{ form.pet.raw_food }} {{ form.pet.raw_food.label }}</p>
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-5">{{ form.pet.freeze_dried_food }} {{ form.pet.freeze_dried_food.label }} {{ form.pet.home_cooked_food }} {{ form.pet.home_cooked_food.label }} {{ form.pet.fresh_food }} {{ form.pet.fresh_food.label }}</p>
+                            </div>
                         <p><button form="onboarding_form" type='submit' class='btn btn-primary'>Sign Up</button></p>
                     </form>
                 </div>
             </div>
         </section>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $( "#{{ form.pet.lineage.id_for_label }}" ).ready(function(){
+                var lineage = document.getElementById("{{ form.pet.lineage.id_for_label }}");
+                if (lineage.options[lineage.selectedIndex].value == 'single breed'){
+                    document.getElementById("primary_breed").style.display = 'inline';
+                    document.getElementById("secondary_breed").style.display = 'none';
+                } else if (lineage.options[lineage.selected_index].value == 'mix of two breeds'){
+                    document.getElementById("primary_breed").style.display = 'inline';
+                    document.getElementById("secondary_breed").style.display = 'inline';
+                } else {
+                    document.getElementById("primary_breed").style.display = 'none';
+                    document.getElementById("secondary_breed").style.display = 'none';
+                };
+            });
+            $( "#{{ form.pet.lineage.id_for_label }}" ).change(function(){
+                var lineage = document.getElementById("{{ form.pet.lineage.id_for_label }}");
+                if (lineage.options[lineage.selectedIndex].value == 'single breed'){
+                    $( "#primary_breed" ).show("fast");
+                    $( "#secondary_breed").hide("fast");
+                } else if (lineage.options[lineage.selectedIndex].value == 'mix of two breeds'){
+                    $( "#primary_breed" ).show("fast");
+                    $( "#secondary_breed" ).show("fast");
+                } else {
+                    $( "#primary_breed" ).hide("fast");
+                    $( "#secondary_breed" ).hide("fast");
+                };
+            });
+        </script>
     </body>
 </HTML>

@@ -10,12 +10,14 @@ from .models import OllieUser, PetInfo
 
 
 class PetInfoForm(forms.ModelForm):
-    dog_name = forms.CharField(label='Your pup\'s name')
+    dog_name = forms.CharField(label='Your pup\'s name is')
     sterilized = forms.NullBooleanField(
-        label='Your pup sterilized', widget=forms.CheckboxInput())
+        label='Your pup is spayed or neutered', widget=forms.CheckboxInput())
     primary_breed = forms.CharField(max_length=64, required=False)
     secondary_breed = forms.CharField(max_length=64, required=False)
-    dry_food = forms.NullBooleanField(widget=forms.CheckboxInput())
+    dry_food = forms.BooleanField(
+        widget=forms.CheckboxInput(),
+        error_messages={'required': 'Please select at least one'})
     wet_food = forms.NullBooleanField(widget=forms.CheckboxInput())
     raw_food = forms.NullBooleanField(widget=forms.CheckboxInput())
     freeze_dried_food = forms.NullBooleanField(widget=forms.CheckboxInput())
@@ -30,6 +32,12 @@ class PetInfoForm(forms.ModelForm):
         )
     )
     birth_year = forms.IntegerField(max_value=datetime.now().year, min_value=1991)
+    allergies = forms.CharField(
+        widget=forms.Textarea({'cols': 20, 'rows': 1}),
+        error_messages={
+            'required': 'If your dog is not allergic to anything, please enter "nothing"'
+        }
+    )
 
     class Meta:
         model = PetInfo
@@ -66,7 +74,7 @@ class PetInfoField(django_superform.ModelFormField):
         return pet
 
 class OllieSignUpForm(django_superform.SuperModelForm):
-    username = forms.CharField(label='Your name')
+    username = forms.CharField(label='Your name is')
     pet = PetInfoField(PetInfoForm)
 
     class Meta:
@@ -75,4 +83,18 @@ class OllieSignUpForm(django_superform.SuperModelForm):
 
     def clean(self):
         data = super(OllieSignUpForm, self).clean()
+        if (self.data['pet-lineage'].lower() == 'single breed' and
+                not self.data['pet-primary_breed']):
+            self.forms['pet'].fields['primary_breed'].required = True
+        elif (self.data['pet-lineage'].lower() == 'mix of two breeds' and
+                not self.data['pet-primary_breed'] and not self.data['pet-secondary_breed']):
+            self.forms['pet'].fields['primary_breed'].required = True
+            self.forms['pet'].fields['secondary_breed'].required = True
+        if ('pet-dry_food' not in self.data.keys() and
+                'pet-wet_food' not in self.data.keys() and
+                'pet-raw_fod' not in self.data.keys() and
+                'pet-fresh_food' not in self.data.keys() and
+                'pet-freeze_dried_food' not in  self.data.keys() and
+                'pet-home_cooked_food' not in self.data.keys()):
+            self.forms['pet'].fields['dry_food'].required = True
         return data
